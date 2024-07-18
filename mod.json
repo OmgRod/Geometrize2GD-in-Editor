@@ -1,0 +1,13 @@
+{
+	"geode": "3.2.0",
+	"gd": {
+		"android": "2.206",
+		"mac": "2.206",
+		"win": "2.206"
+	},
+	"version": "v1.0.0",
+	"id": "omgrod.geometrize2gd_in_editor",
+	"name": "Geometrize2GD in Editor",
+	"developer": "OmgRod",
+	"description": "Place images into the editor"
+}
