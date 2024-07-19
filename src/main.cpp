@@ -1,33 +1,38 @@
 #include <Geode/Geode.hpp>
+#include <Geode/loader/Loader.hpp>
+#include <Geode/modify/LevelEditorLayer.hpp>
 
 using namespace geode::prelude;
 
-#include <Geode/modify/MenuLayer.hpp>
-class $modify(MyMenuLayer, MenuLayer) {
-	bool init() {
-		if (!MenuLayer::init()) {
+class $modify(MyLevelEditorLayer, LevelEditorLayer) {
+	bool init(GJGameLevel* p0, bool p1) {
+		if (!LevelEditorLayer::init(p0, p1)) {
 			return false;
 		}
 
-		log::debug("Hello from my MenuLayer::init hook! This layer has {} children.", this->getChildrenCount());
+		auto editorUi = this->getChildByID("EditorUI");
 
-		auto myButton = CCMenuItemSpriteExtra::create(
-			CCSprite::createWithSpriteFrameName("GJ_likeBtn_001.png"),
-			this,
-			menu_selector(MyMenuLayer::onMyButton)
-		);
+		if (Loader::get()->isModLoaded("hjfod.betteredit")) {
+			// BetterEdit is loaded
+			auto editMenuChildren = editorUi->getChildByID("hjfod.betteredit/custom-move-menu")->getChildren();
+			auto buttonBar = static_cast<CCNode*>(editMenuChildren->objectAtIndex(2));
 
-		auto menu = this->getChildByID("bottom-menu");
-		menu->addChild(myButton);
+			auto geometrizeIcon = CCSprite::create("geometrizeBtn.png"_spr);
 
-		myButton->setID("my-button"_spr);
+			auto geometrizeBtn = CCMenuItemSpriteExtra::create(
+				geometrizeIcon, this, menu_selector(MyLevelEditorLayer::popup)
+			);
 
-		menu->updateLayout();
+			buttonBar->addChild(geometrizeBtn);
+			buttonBar->updateLayout();
+		} else {
+			// BetterEdit is not loaded
+		}
 
 		return true;
 	}
 
-	void onMyButton(CCObject*) {
-		FLAlertLayer::create("Geode", "Hello from my custom mod!", "OK")->show();
+	void popup(CCObject* sender) {
+		FLAlertLayer::create("Geometrize2GD", "The tool isn't ready yet", "OK")->show();
 	}
 };

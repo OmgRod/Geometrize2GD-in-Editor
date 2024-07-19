@@ -9,5 +9,8 @@
 	"id": "omgrod.geometrize2gd_in_editor",
 	"name": "Geometrize2GD in Editor",
 	"developer": "OmgRod",
-	"description": "Place images into the editor"
+	"description": "Place images into the editor",
+	"resources": {
+		"sprites": ["res/*"]
+	}
 }
